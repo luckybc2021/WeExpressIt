@@ -9,10 +9,12 @@
 
 <VUI.VUIButton Text="Click me"
                Normal_BackgroundColor="#0000ff"
-               MouseEnter_BackgroundColor="#00ff00"
                Clicked_BackgroundColor="#ff0000"
-               OnClicked="onclicked"
-               OnMouseUp="onmouseup"/>
+               MouseEnter_BackgroundColor="#00ff00"
+               MouseLeave_BackgroundColor="#ffff00"
+               MouseDown_BackgroundColor="#00ffff"
+               MouseUp_BackgroundColor="#ff00ff"
+               OnClicked="onclicked"/>
 
 <p role="status">Current count: @currentCount</p>
 
@@ -24,10 +26,5 @@
     private void onclicked(VUIButton btn)
     {
         currentCount++;
-    }
-
-    private void onmouseup(VUIButton btn)
-    {
-        StateHasChanged();
     }
 }
