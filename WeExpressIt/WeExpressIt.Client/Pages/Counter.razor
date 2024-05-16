@@ -11,19 +11,28 @@
     <option>UserDecision</option>
 </select>
 
-<VUI.VUIButton Text="Click me"
-               TransitionType="@transitionType"
-               Normal_BackgroundColor="#00ffff" 
-               Clicked_BackgroundColor="#9900cc"
-               MouseEnter_BackgroundColor="#00ff00"
-               MouseLeave_BackgroundColor="#ffff00"
-               MouseDown_BackgroundColor="#ff0066"
-               MouseUp_BackgroundColor="#ff00ff"
-               OnClicked="OnClicked"
-               OnMouseDown="OnMouseDown"
-               OnMouseLeave="OnMouseLeave" />
+<VUIButton Text="Click me"
+           TransitionType="@transitionType"
+           Normal_BackgroundColor="#00ffff" 
+           Clicked_BackgroundColor="#9900cc"
+           MouseEnter_BackgroundColor="#00ff00"
+           MouseLeave_BackgroundColor="#ffff00"
+           MouseDown_BackgroundColor="#ff0066"
+           MouseUp_BackgroundColor="#ff00ff"
+           OnClicked="OnClicked"
+           OnMouseDown="OnMouseDown"
+           OnMouseLeave="OnMouseLeave" />
 
 <p role="status">Current count: @currentCount</p>
+
+
+<VUIButton ContentType="Image"
+           ContentPath="Images/reset-icon-32.png"
+           Normal_BackgroundColor="#00ffff"
+           Clicked_BackgroundColor="#9900cc"
+           MouseEnter_BackgroundColor="#00ff00"
+           OnClicked="OnClicked_ResetCounting"/>
+
 
 @code {
 
@@ -33,6 +42,11 @@
     private void OnClicked(VUIButton btn)
     {
         currentCount++;
+    }
+
+    private void OnClicked_ResetCounting(VUIButton btn)
+    {
+        currentCount = 0;
     }
 
     private async void OnMouseDown(VUIButton btn)
