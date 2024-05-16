@@ -8,13 +8,15 @@
 
 
 <VUI.VUIButton Text="Click me"
-               Normal_BackgroundColor="#0000ff"
-               Clicked_BackgroundColor="#ff0000"
+               Normal_BackgroundColor="#00ffff" 
+               Clicked_BackgroundColor="#9900cc"
                MouseEnter_BackgroundColor="#00ff00"
                MouseLeave_BackgroundColor="#ffff00"
-               MouseDown_BackgroundColor="#00ffff"
+               MouseDown_BackgroundColor="#ff0066"
                MouseUp_BackgroundColor="#ff00ff"
-               OnClicked="onclicked"/>
+               OnClicked="OnClicked"
+               OnMouseDown="OnMouseDown"
+               OnMouseLeave="OnMouseLeave" />
 
 <p role="status">Current count: @currentCount</p>
 
@@ -23,8 +25,20 @@
     private int currentCount = 0;
 
 
-    private void onclicked(VUIButton btn)
+    private void OnClicked(VUIButton btn)
     {
         currentCount++;
+    }
+
+    private async void OnMouseDown(VUIButton btn)
+    {
+        await btn.TransitionTo(0, "MouseDown", 0, new string[] { "Clicked" });        
+    }
+
+    private async void OnMouseLeave(VUIButton btn)
+    {
+        await btn.TransitionTo(300, "Normal", 0, new string[] { "All" });
+        
+        btn.StopTransition();
     }
 }
