@@ -2,12 +2,17 @@
 @using VUI
 @rendermode InteractiveWebAssembly
 
-<PageTitle>Counter</PageTitle>
+<PageTitle>Demo Counter with VUIButton</PageTitle>
 
-<h1>Counter</h1>
+<h1>Demo Counter with VUIButton</h1>
 
+<select @bind="transitionType">
+    <option>UIState</option>
+    <option>UserDecision</option>
+</select>
 
 <VUI.VUIButton Text="Click me"
+               TransitionType="@transitionType"
                Normal_BackgroundColor="#00ffff" 
                Clicked_BackgroundColor="#9900cc"
                MouseEnter_BackgroundColor="#00ff00"
@@ -23,7 +28,7 @@
 @code {
 
     private int currentCount = 0;
-
+    private string transitionType = "UIState";
 
     private void OnClicked(VUIButton btn)
     {
@@ -32,13 +37,13 @@
 
     private async void OnMouseDown(VUIButton btn)
     {
-        await btn.TransitionTo(0, "MouseDown", 0, new string[] { "Clicked" });        
+        await TransitionManager.TransitionTo(btn, 0, "MouseDown", 0, new string[] { "Clicked" });        
     }
 
     private async void OnMouseLeave(VUIButton btn)
     {
-        await btn.TransitionTo(300, "Normal", 0, new string[] { "All" });
-        
-        btn.StopTransition();
+        await TransitionManager.TransitionTo(btn, 300, "Normal", 0, new string[] { "All" });
+
+        TransitionManager.StopTransition(btn);
     }
 }
