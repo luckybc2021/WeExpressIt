@@ -36,11 +36,12 @@
 <VUIElement ContentType="Video"
             ContentPath="Videos/ShortVideo.mp4"
             Width="32px"
-            Height="32px"/>
+            Height="32px"
+            OnReadyToUse="OnReadyToUse_PlayVideo"/>
 
 
 @code {
-
+    VUIElement video;
     private int currentCount = 0;
     private string transitionType = "UIState";
 
@@ -49,14 +50,16 @@
         currentCount++;
     }
 
-    private void OnClicked_ResetCounting(VUIElement btn)
+    private async void OnClicked_ResetCounting(VUIElement btn)
     {
         currentCount = 0;
+
+        await video.PlayVideo();
     }
 
     private async void OnMouseDown(VUIElement btn)
     {
-        await TransitionManager.TransitionTo(btn, 0, "MouseDown", 0, new string[] { "Clicked" });        
+        await TransitionManager.TransitionTo(btn, 0, "MouseDown", 0, new string[] { "Clicked" });
     }
 
     private async void OnMouseLeave(VUIElement btn)
@@ -64,5 +67,10 @@
         await TransitionManager.TransitionTo(btn, 300, "Normal", 0, new string[] { "All" });
 
         TransitionManager.StopTransition(btn);
+    }
+
+    private void OnReadyToUse_PlayVideo(VUIElement _video)
+    {
+        video = _video;
     }
 }
