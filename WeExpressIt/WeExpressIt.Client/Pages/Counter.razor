@@ -40,8 +40,12 @@
             OnReadyToUse="OnReadyToUse_PlayVideo"/>
 
 
+<VUIElement ContentType="Audio" 
+            ContentPath="Audio/cute-level-up-3.mp3"
+            OnReadyToUse="OnReadyToUse_PlayAudio" />
+
 @code {
-    VUIElement video;
+    VUIElement video, audio;
     private int currentCount = 0;
     private string transitionType = "UIState";
 
@@ -54,7 +58,8 @@
     {
         currentCount = 0;
 
-        await video.PlayVideo();
+        await video.PlayMedia();
+        await audio.PlayMedia();
     }
 
     private async void OnMouseDown(VUIElement btn)
@@ -72,5 +77,10 @@
     private void OnReadyToUse_PlayVideo(VUIElement _video)
     {
         video = _video;
+    }
+
+    private void OnReadyToUse_PlayAudio(VUIElement _audio)
+    {
+        audio = _audio;
     }
 }
