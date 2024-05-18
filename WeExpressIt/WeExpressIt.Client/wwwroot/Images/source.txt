@@ -1,2 +1,5 @@
-[https://www.pngegg.com/en/png-shmsf/download?height=32]
-reset-icon-32.png 
+[https://www.pngegg.com/en/]
+reset-icon-32
+play-icon-32
+pause-icon-32
+stop-icon-32
