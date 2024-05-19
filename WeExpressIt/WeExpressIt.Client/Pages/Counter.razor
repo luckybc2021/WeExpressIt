@@ -2,16 +2,16 @@
 @using VUI
 @rendermode InteractiveWebAssembly
 
-<PageTitle>Demo Counter with VUIButton</PageTitle>
+<PageTitle>Demo Counter with VUIElement, VUIButton, VUIMedia</PageTitle>
 
-<h1>Demo Counter with VUIButton</h1>
+<h1>Demo Counter with VUIElement, VUIButton, VUIMedia</h1>
 
 <select @bind="transitionType">
     <option>UIState</option>
     <option>UserDecision</option>
 </select>
 
-<VUIButton Text="Click me"
+<VUIButton Text="Repeat Playing Video"
            TransitionType="@transitionType"
            Normal_BackgroundColor="#00ffff" 
            Clicked_BackgroundColor="#9900cc"
@@ -33,54 +33,95 @@
            OnClicked="OnClicked_ResetCounting" />
 
 
-<VUIElement ContentType="Video"
+<VUIMedia ID="Video" ContentType="Video"
             ContentPath="Videos/ShortVideo.mp4"
             Width="32px"
             Height="32px"
-            OnReadyToUse="OnReadyToUse_PlayVideo"/>
+            OnReadyToUse="OnReadyToUse_It" 
+            OnCurrentTimeUpdate="OnCurrentTimeUpdate_Video" />
 
 
-<VUIElement ContentType="Audio" 
-            ContentPath="Audio/cute-level-up-3.mp3"
-            OnReadyToUse="OnReadyToUse_PlayAudio" />
+<VUIMedia ID="Audio" ContentType="Audio"
+          ContentPath="Audio/cute-level-up-3.mp3"
+            OnReadyToUse="OnReadyToUse_It" />
+
+<input type="range" min="0" @bind="currentTime" 
+       max="@duration" step="0.1" @oninput="SetCurrentTime"/>
+
+<VUIElement ID="VideoDuration" ContentType="Text"
+            OnReadyToUse="OnReadyToUse_It" />
 
 @code {
-    VUIElement video, audio;
+    double currentTime = 0;
+    double duration = 0;
+    Dictionary<string, VUIElement> Elements = new Dictionary<string, VUIElement>();
     private int currentCount = 0;
     private string transitionType = "UIState";
+
 
     private void OnClicked(VUIElement btn)
     {
         currentCount++;
     }
 
+    async void SetCurrentTime(ChangeEventArgs e)
+    {
+        await Elements["Video"].SetCurrentTime(Convert.ToDouble(e.Value));
+    }
+
+    private async void OnCurrentTimeUpdate_Video(VUIElement video)
+    {
+        currentTime = video.CurrentTime;
+
+        if (currentTime >= duration)
+        {
+            currentCount--;
+
+            PlayVideo();
+        }
+    }
+
     private async void OnClicked_ResetCounting(VUIElement btn)
     {
-        currentCount = 0;
+        PlayVideo();
+    }
 
-        await video.PlayMedia();
-        await audio.PlayMedia();
+    private async void PlayVideo()
+    {
+        if (currentCount > 0)
+        {
+            await Elements["Audio"].Play();
+
+            await Elements["Video"].Play();
+        }
     }
 
     private async void OnMouseDown(VUIElement btn)
     {
-        await TransitionManager.TransitionTo(btn, 0, "MouseDown", 0, new string[] { "Clicked" });
+        await VUITransitionManager.TransitionTo(btn, 0, "MouseDown", 0, new string[] { "Clicked" });
     }
 
     private async void OnMouseLeave(VUIElement btn)
     {
-        await TransitionManager.TransitionTo(btn, 300, "Normal", 0, new string[] { "All" });
+        await VUITransitionManager.TransitionTo(btn, 300, "Normal", 0, new string[] { "All" });
 
-        TransitionManager.StopTransition(btn);
+        VUITransitionManager.StopTransition(btn);
     }
 
-    private void OnReadyToUse_PlayVideo(VUIElement _video)
+    private async void OnReadyToUse_It(VUIElement _e)
     {
-        video = _video;
-    }
+        if (!string.IsNullOrEmpty(_e.ID) && !Elements.ContainsKey(_e.ID))
+        {
+            Elements.Add(_e.ID, _e);
+        }
 
-    private void OnReadyToUse_PlayAudio(VUIElement _audio)
-    {
-        audio = _audio;
+        if (Elements.ContainsKey("Video") &&
+            Elements.ContainsKey("VideoDuration"))
+        {
+            Elements["VideoDuration"].Text = 
+                $"{Elements["Video"].Duration}";
+
+            duration = Elements["Video"].Duration;
+        }
     }
 }
