@@ -25,25 +25,29 @@
 
 <p role="status">Current count: @currentCount</p>
 
-<VUIButton ContentType="Image"
-           ContentPath="Images/reset-icon-32.png"
+<VUIButton ID="Button" ContentType="Image"
+           ContentPath="@ContentPath"
            Normal_BackgroundColor="#00ffff"
            Clicked_BackgroundColor="#9900cc"
            MouseEnter_BackgroundColor="#00ff00"
-           OnClicked="OnClicked_ResetCounting" />
+           OnClicked="OnClicked_ResetCounting" 
+           OnReadyToUse="OnReadyToUse_It" />
 
 
 <VUIMedia ID="Video" ContentType="Video"
-            ContentPath="Videos/ShortVideo.mp4"
-            Width="32px"
-            Height="32px"
-            OnReadyToUse="OnReadyToUse_It" 
-            OnCurrentTimeUpdate="OnCurrentTimeUpdate_Video" />
+          ContentPath="Videos/ShortVideo.mp4"
+          Width="32px"
+          Height="32px"
+          OnReadyToUse="OnReadyToUse_It"
+          OnPlay="OnPlay_Video"
+          OnPause="OnPause_Video"
+          OnEnd="OnEnd_Video"
+          OnCurrentTimeUpdate="OnCurrentTimeUpdate_Video" />
 
 
 <VUIMedia ID="Audio" ContentType="Audio"
           ContentPath="Audio/cute-level-up-3.mp3"
-            OnReadyToUse="OnReadyToUse_It" />
+          OnReadyToUse="OnReadyToUse_It" />
 
 <input type="range" min="0" @bind="currentTime" 
        max="@duration" step="0.1" @oninput="SetCurrentTime"/>
@@ -51,13 +55,14 @@
 <VUIElement ID="VideoDuration" ContentType="Text"
             OnReadyToUse="OnReadyToUse_It" />
 
+
 @code {
     double currentTime = 0;
     double duration = 0;
     Dictionary<string, VUIElement> Elements = new Dictionary<string, VUIElement>();
     private int currentCount = 0;
     private string transitionType = "UIState";
-
+    string ContentPath = "Images/reset-icon-32.png";
 
     private void OnClicked(VUIElement btn)
     {
@@ -67,6 +72,21 @@
     async void SetCurrentTime(ChangeEventArgs e)
     {
         await Elements["Video"].SetCurrentTime(Convert.ToDouble(e.Value));
+    }
+
+    private async void OnPlay_Video(VUIElement video)
+    {
+        ContentPath = "Images/pause-icon-32.png";
+    }
+
+    private async void OnPause_Video(VUIElement video)
+    {
+        ContentPath = "Images/play-icon-32.png";
+    }
+
+    private async void OnEnd_Video(VUIElement video)
+    {
+        ContentPath = "Images/reset-icon-32.png";
     }
 
     private async void OnCurrentTimeUpdate_Video(VUIElement video)
@@ -83,7 +103,23 @@
 
     private async void OnClicked_ResetCounting(VUIElement btn)
     {
-        PlayVideo();
+        switch (Elements["Video"].MediaState)
+        {
+            case "Play":
+
+                await Elements["Video"].Pause();
+                break;
+
+            case "Pause":
+
+                await Elements["Video"].Play();
+                break;
+
+            case "Normal":
+
+                PlayVideo();
+                break;
+        }
     }
 
     private async void PlayVideo()
