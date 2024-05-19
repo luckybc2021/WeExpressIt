@@ -52,7 +52,9 @@
 <input type="range" min="0" @bind="currentTime" 
        max="@duration" step="0.1" @oninput="SetCurrentTime"/>
 
-<VUIElement ID="VideoDuration" ContentType="Text"
+<VUIElement ID="VideoDuration" 
+            ContentType="Text"
+            Text="@duration.ToString()"
             OnReadyToUse="OnReadyToUse_It" />
 
 
@@ -74,22 +76,22 @@
         await Elements["Video"].SetCurrentTime(Convert.ToDouble(e.Value));
     }
 
-    private async void OnPlay_Video(VUIElement video)
+    private void OnPlay_Video(VUIElement video)
     {
         ContentPath = "Images/pause-icon-32.png";
     }
 
-    private async void OnPause_Video(VUIElement video)
+    private void OnPause_Video(VUIElement video)
     {
         ContentPath = "Images/play-icon-32.png";
     }
 
-    private async void OnEnd_Video(VUIElement video)
+    private void OnEnd_Video(VUIElement video)
     {
         ContentPath = "Images/reset-icon-32.png";
     }
 
-    private async void OnCurrentTimeUpdate_Video(VUIElement video)
+    private void OnCurrentTimeUpdate_Video(VUIElement video)
     {
         currentTime = video.CurrentTime;
 
@@ -144,7 +146,7 @@
         VUITransitionManager.StopTransition(btn);
     }
 
-    private async void OnReadyToUse_It(VUIElement _e)
+    private void OnReadyToUse_It(VUIElement _e)
     {
         if (!string.IsNullOrEmpty(_e.ID) && !Elements.ContainsKey(_e.ID))
         {
@@ -154,9 +156,6 @@
         if (Elements.ContainsKey("Video") &&
             Elements.ContainsKey("VideoDuration"))
         {
-            Elements["VideoDuration"].Text = 
-                $"{Elements["Video"].Duration}";
-
             duration = Elements["Video"].Duration;
         }
     }
