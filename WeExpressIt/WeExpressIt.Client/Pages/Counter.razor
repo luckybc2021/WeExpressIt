@@ -11,19 +11,36 @@
     <option>UserDecision</option>
 </select>
 
-<VUIButton Text="Repeat Playing Video"
-           TransitionType="@transitionType"
-           Normal_BackgroundColor="#00ffff" 
-           Clicked_BackgroundColor="#9900cc"
-           MouseEnter_BackgroundColor="#00ff00"
-           MouseLeave_BackgroundColor="#ffff00"
-           MouseDown_BackgroundColor="#ff0066"
-           MouseUp_BackgroundColor="#ff00ff"
-           OnClicked="OnClicked"
-           OnMouseDown="OnMouseDown"
-           OnMouseLeave="OnMouseLeave" />
+<div style="margin-bottom:5px;">
 
-<p role="status">Current count: @currentCount</p>
+    <VUIButton Text="Repeat Playing Video"
+               TransitionType="@transitionType"
+               Normal_BackgroundColor="#00ffff"
+               Clicked_BackgroundColor="#9900cc"
+               MouseEnter_BackgroundColor="#00ff00"
+               MouseLeave_BackgroundColor="#ffff00"
+               MouseDown_BackgroundColor="#ff0066"
+               MouseUp_BackgroundColor="#ff00ff"
+               OnClicked="OnClicked"
+               OnMouseDown="OnMouseDown"
+               OnMouseLeave="OnMouseLeave" />
+
+    <label role="status">x @currentCount</label>
+
+</div>
+
+<div style="margin-bottom:10px;">
+    <VUIElement Text="Playback Rate:" />
+
+    <input type="number"
+           style="width:60px;"
+           step="0.1"
+           min="0.0"
+           max="2.0"
+           @bind="plackbackSpeed"
+           @oninput="SetplackbackSpeed" />
+</div>
+
 
 <VUIButton ID="Button" ContentType="Image"
            ContentPath="@ContentPath"
@@ -35,6 +52,7 @@
 
 
 <VUIMedia ID="Video" ContentType="Video"
+          TransitionType="UserDecision"
           ContentPath="Videos/ShortVideo.mp4"
           Width="32px"
           Height="32px"
@@ -58,8 +76,12 @@
             OnReadyToUse="OnReadyToUse_It" />
 
 
+
+
+
 @code {
     double currentTime = 0;
+    double plackbackSpeed = 1.0;
     double duration = 0;
     Dictionary<string, VUIElement> Elements = new Dictionary<string, VUIElement>();
     private int currentCount = 0;
@@ -68,7 +90,23 @@
 
     private void OnClicked(VUIElement btn)
     {
+        if (currentCount == 0)
+        {
+            Elements["Video"].MediaState = "Normal";
+        }
+
         currentCount++;
+    }
+
+    async void SetplackbackSpeed(ChangeEventArgs e)
+    {
+        var speed = Convert.ToDouble(e.Value);
+
+        await VUIStateManager.TransitionTo(
+            Elements["Video"], 
+            0, 
+            "PlaybackRate", speed, 
+            0);
     }
 
     async void SetCurrentTime(ChangeEventArgs e)
@@ -136,14 +174,14 @@
 
     private async void OnMouseDown(VUIElement btn)
     {
-        await VUITransitionManager.TransitionTo(btn, 0, "MouseDown", 0, new string[] { "Clicked" });
+        await VUIStateManager.InteractionStateTo(btn, 0, "MouseDown", 0, new string[] { "Clicked" });
     }
 
     private async void OnMouseLeave(VUIElement btn)
     {
-        await VUITransitionManager.TransitionTo(btn, 300, "Normal", 0, new string[] { "All" });
+        await VUIStateManager.InteractionStateTo(btn, 300, "Normal", 0, new string[] { "All" });
 
-        VUITransitionManager.StopTransition(btn);
+        VUIStateManager.StopInteraction(btn);
     }
 
     private void OnReadyToUse_It(VUIElement _e)
