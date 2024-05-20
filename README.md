@@ -1,5 +1,6 @@
 <a href="https://www.buymeacoffee.com/vosongtoan" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
+# Thanks = ![Static Badge](https://img.shields.io/badge/58_Clones-33_Unique_Cloners-blue) ![Static Badge](https://img.shields.io/badge/github.com-142_Views-crimson)
 
 # WeExpressIt App
 
