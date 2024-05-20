@@ -7,7 +7,7 @@
 <h1>Demo Counter with VUIElement, VUIButton, VUIMedia</h1>
 
 <select @bind="transitionType">
-    <option>UIState</option>
+    <option>InteractionState</option>
     <option>UserDecision</option>
 </select>
 
@@ -85,7 +85,7 @@
     double duration = 0;
     Dictionary<string, VUIElement> Elements = new Dictionary<string, VUIElement>();
     private int currentCount = 0;
-    private string transitionType = "UIState";
+    private string transitionType = "InteractionState";
     string ContentPath = "Images/reset-icon-32.png";
 
     private void OnClicked(VUIElement btn)
