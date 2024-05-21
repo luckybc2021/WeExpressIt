@@ -4,7 +4,7 @@
 
 # WeExpressIt App
 
-This repository contains a .NET 8 Blazor WebAssembly application created to demonstrate and test the capabilities of the VUI (Vietnam User Interfaces) Razor library.
+This repository contains a .NET 8 Blazor WebAssembly application created to document, demonstrate and test the capabilities of the VUI (Vietnam User Interfaces) Razor library.
 
 ## About VUI
 
