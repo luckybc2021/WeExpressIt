@@ -1,7 +1,40 @@
 ﻿@page "/"
+@rendermode InteractiveServer
+@using VUI
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<VUIPaper View="dual vertical max"
+          PageNumber=1
+          Pieces=@VUIScript.Empties>
+    <Page1>
+        <VUIText>Page 1</VUIText>
+    </Page1>
+
+</VUIPaper>
+
+
+
+
+@code{
+    private string newName = "newName";
+
+    private List<Pet> pets = new()
+    {
+        new Pet { PetId = 1, Name = "Mr. Bigglesworth" },
+        new Pet { PetId = 2, Name = "Salem Saberhagen" },
+        new Pet { PetId = 3, Name = "K-9" }
+    };
+
+    private class Pet
+    {
+        public int PetId { get; set; }
+        public string? Name { get; set; }
+    }
+
+    private void onnewname(ChangeEventArgs e)
+    {
+        newName = e.Value.ToString();
+    }
+}

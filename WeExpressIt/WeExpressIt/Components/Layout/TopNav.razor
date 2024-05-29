@@ -1,0 +1,32 @@
+﻿@rendermode InteractiveServer
+@using VUI
+
+<VUILine Width="100%" 
+         Normal_BackgroundColor="#CFE5E5"
+         MouseEnter_BackgroundColor="#CFE5E5"
+         Clicked_BackgroundColor="#CFE5E5"
+         Align="Children top-center">
+    
+    <VUIText FontFamily="Freestyle Script"
+             FontSize="32px"
+             OnClicked="OnClick">
+        Donation     
+    </VUIText>
+
+    <VUIText FontFamily="Freestyle Script"
+             FontSize="32px"
+             OnClicked="OnClick">
+        About
+    </VUIText>
+
+</VUILine>
+
+@code {
+    private string contentType = "Text";
+
+    private void OnClick(VUIElement e)
+    {
+        var t = (VUIText)e;
+        Console.WriteLine($"Clicked {t.Content}");
+    }
+}

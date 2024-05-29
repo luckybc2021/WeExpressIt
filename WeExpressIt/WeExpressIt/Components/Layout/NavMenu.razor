@@ -1,30 +1,37 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">WeExpressIt</a>
-    </div>
-</div>
+﻿@rendermode InteractiveServer
+@using VUI
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+<VUIText Display="block"
+         Normal_BackgroundColor="#CFE5E5"
+         MouseEnter_BackgroundColor="#CFE5E5"
+         Clicked_BackgroundColor="#CFE5E5"
+         FontFamily="Freestyle Script"
+         FontSize="32px" 
+         FontWeight="bold"
+         Padding="0 0 0 30px">
+    We Express VUI
+</VUIText>
 
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
+<VUIList Height="100%"
+         Normal_BackgroundColor="#526A6B"
+         MouseEnter_BackgroundColor="#526A6B"
+         Clicked_BackgroundColor="#526A6B"
+         Normal_Color="#ffffff"
+         MouseEnter_Color="#ff00ff"
+         Clicked_Color="#ffffff"
+         FontFamily="Freestyle Script"
+         FontSize="24px"
+         Items=@parts />
 
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
+@code
+{
+    private string[] parts =
+    [
+        "Getting Started Guide",
+        "API Reference",
+        "Examples and Tutorials",
+        "Configuration and Options",
+        "Troubleshooting and FAQs",
+        "Release Notes and Changelog",
+    ];
+}
